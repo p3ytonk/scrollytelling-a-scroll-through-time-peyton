@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+}
+
+/* =========================
+   Layout
+========================= */
+
+.container {
+  width: min(var(--max-width), 100%);
+  margin-inline: auto;
+  padding-inline: var(--space-m);
+}
+
+.section {
+  min-height: 100svh;
+  padding-block: var(--space-xxl);
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   Hero
+========================= */
+
+.section--hero {
+  text-align: center;
+}
+
+.hero-title {
+  font-family: var(--font-hero);
+  font-size: clamp(3rem, 8vw, var(--text-hero));
+  line-height: var(--line-tight);
+  margin-bottom: var(--space-m);
+  color: var(--color-accent-two);
+}
+
+.hero-subtitle {
+  font-size: var(--text-h2);
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+  margin-inline: auto;
+}
+
+/* =========================
+   Chapters
+========================= */
+
+.section--chapter h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2);
+  margin-bottom: var(--space-s);
+  color: var(--color-accent-two);
+}
+
+.chapter-kicker {
+  color: var(--color-date-text);
+  margin-bottom: var(--space-m);
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-xl);
+}
+
+.chapter-text p {
+  margin-bottom: var(--space-m);
+  max-width: 65ch;
+}
+
+/* Card / aside block */
+
+.card {
+  background: var(--color-accent);
+  padding: var(--space-l);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+}
+
+.card h3 {
+  margin-top: 0;
+  font-family: var(--font-heading);
+}
+
+/* =========================
+   Section Contrast
+========================= */
+
+.chapter--light {
+  background: var(--color-background);
+}
+
+.chapter--accent {
+  background: var(--color-accent);
+  color: var(--color-text-secondary);
+}
+
+.chapter--accent h2 {
+  color: var(--color-date-text);
+}
+
+/* =========================
+   Links
+========================= */
+
+a {
+  color: var(--color-date-text);
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent-two);
+  outline-offset: 3px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 820px) {
+  .chapter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding-block: var(--space-xl);
+  }
+}
