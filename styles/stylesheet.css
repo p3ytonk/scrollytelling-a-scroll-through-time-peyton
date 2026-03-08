@@ -2,7 +2,10 @@
   box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--color-background);
@@ -10,13 +13,6 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: var(--line-body);
-  overflow-y: hidden;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-}
-
-body {
-  min-height: 100vh;
 }
 
 /* =========================
@@ -29,24 +25,8 @@ body {
   padding-inline: var(--space-m);
 }
 
-.horizontal-scroll {
-  display: flex;
-  flex-direction: row;
-  width: max-content;
-  min-height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-}
-
-.panel {
-  width: 100vw;
-  min-height: 100vh;
-  flex: 0 0 100vw;
-  scroll-snap-align: start;
-}
-
 .section {
+  min-height: 100svh;
   padding-block: var(--space-xxl);
   display: flex;
   align-items: center;
@@ -57,12 +37,10 @@ body {
 ========================= */
 
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
   z-index: 10;
-  background: rgba(59, 28, 25, 0.9);
+  background: rgba(59, 28, 25, 0.92);
   backdrop-filter: blur(6px);
 }
 
@@ -119,10 +97,6 @@ body {
   text-align: center;
 }
 
-.section--hero .container {
-  padding-top: 6rem;
-}
-
 .hero-title {
   font-family: var(--font-hero);
   font-size: clamp(3rem, 8vw, var(--text-hero));
@@ -146,10 +120,6 @@ body {
    Chapters
 ========================= */
 
-.section--chapter .container {
-  padding-top: 6rem;
-}
-
 .section--chapter h2 {
   font-family: var(--font-heading);
   font-size: var(--text-h2);
@@ -171,18 +141,6 @@ body {
 .chapter-text p {
   margin-bottom: var(--space-m);
   max-width: 65ch;
-}
-
-.card {
-  background: var(--color-accent);
-  padding: var(--space-l);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-}
-
-.card h3 {
-  margin-top: 0;
-  font-family: var(--font-heading);
 }
 
 /* =========================
@@ -211,7 +169,11 @@ body {
 ========================= */
 
 .site-footer {
-  display: none;
+  padding-block: var(--space-l);
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 /* =========================
@@ -250,15 +212,8 @@ a:focus-visible {
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
-  html,
-  body {
-    overflow-y: auto;
-    overflow-x: auto;
+  html {
     scroll-behavior: auto;
-  }
-
-  .horizontal-scroll {
-    scroll-snap-type: none;
   }
 
   .hero-title,
