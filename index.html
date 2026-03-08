@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>A Scroll Through Time</title>
 
-  <!-- Tokens FIRST -->
   <link rel="stylesheet" href="styles/variables.css">
-  <!-- Styles SECOND -->
   <link rel="stylesheet" href="styles/stylesheet.css">
 </head>
 
@@ -31,22 +29,20 @@
     </div>
   </header>
 
-  <main id="main">
-    <!-- HERO -->
-    <section class="section section--hero" id="hero">
+  <main id="main" class="horizontal-scroll">
+    <section class="section section--hero panel" id="hero">
       <div class="container">
         <h1 class="hero-title">A Scroll Through Time</h1>
         <p class="hero-subtitle">Every scroll triggers a new chapter, just as every year triggers a new version of ourselves.</p>
 
         <div class="hero-meta">
-          <p>Peyton Whiteley / Code and Design II / A Scroll Through Time</p>
-          <p class="hint">Scroll to begin ↓</p>
+          <p>Peyton Knox / Code and Design II / A Scroll Through Time</p>
+          <p class="hint">Scroll sideways to begin →</p>
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 1 -->
-    <section class="section section--chapter chapter--light" id="ch1">
+    <section class="section section--chapter chapter--light panel" id="ch1">
       <div class="container">
         <header class="chapter-header">
           <h2>Hello, World</h2>
@@ -54,12 +50,13 @@
 
         <div class="chapter-grid">
           <div class="chapter-text">
-            <p>Just like a programmer’s first line of code, every life begins with a simple introduction: Hello, World. In JavaScript, this moment starts a program and prepares it to respond to events. In life, birth is the first event the beginning of a timeline that will grow and change with time.</p>
+            <p>Just like a programmer’s first line of code, every life begins with a simple introduction: Hello, World. In JavaScript, this moment starts a program and prepares it to respond to events. In life, birth is the first event, the beginning of a timeline that will grow and change with time.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 2 -->
-    <section class="section section--chapter chapter--dark" id="ch2">
+    <section class="section section--chapter chapter--dark panel" id="ch2">
       <div class="container">
         <header class="chapter-header">
           <h2>The Age of Wonder</h2>
@@ -70,10 +67,11 @@
           <div class="chapter-text">
             <p>At five years old, curiosity becomes the driving force. Like adding event listeners in JavaScript, every action creates a reaction and teaches something new. This is the stage where interaction begins, and the world responds back.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 3 -->
-    <section class="section section--chapter chapter--accent" id="ch3">
+    <section class="section section--chapter chapter--accent panel" id="ch3">
       <div class="container">
         <header class="chapter-header">
           <h2>Behind the Wheel</h2>
@@ -84,10 +82,11 @@
           <div class="chapter-text">
             <p>I started realizing that code does not just run on its own. Every function, every variable, every line has a purpose. I am still learning how it all works, but I am beginning to see how the pieces connect.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 4 -->
-    <section class="section section--chapter chapter--light" id="ch4">
+    <section class="section section--chapter chapter--light panel" id="ch4">
       <div class="container">
         <header class="chapter-header">
           <h2>Full Volume</h2>
@@ -98,10 +97,11 @@
           <div class="chapter-text">
             <p>At this stage, everything feels active at once. Like multiple events firing in JavaScript, there is constant input and constant reaction. I am still learning how to manage it all, figuring out how the system handles so much happening at the same time.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 5 -->
-    <section class="section section--chapter chapter--dark" id="ch5">
+    <section class="section section--chapter chapter--dark panel" id="ch5">
       <div class="container">
         <header class="chapter-header">
           <h2>Built With Intention</h2>
@@ -112,10 +112,11 @@
           <div class="chapter-text">
             <p>I am starting to understand that good code is not rushed. Every function, every variable, every decision should have a clear purpose. Instead of just making it work, I am learning to slow down and build with intention.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 6 -->
-    <section class="section section--chapter chapter--accent" id="ch6">
+    <section class="section section--chapter chapter--accent panel" id="ch6">
       <div class="container">
         <header class="chapter-header">
           <h2>Passing Knowledge Down</h2>
@@ -124,12 +125,13 @@
 
         <div class="chapter-grid">
           <div class="chapter-text">
-            <p>After spending time learning how everything connects, I begin to see the bigger picture. The mistakes, the debugging, and the slow progress all start to mean something. What once felt confusing now becomes experience I can share.</p></p>
+            <p>After spending time learning how everything connects, I begin to see the bigger picture. The mistakes, the debugging, and the slow progress all start to mean something. What once felt confusing now becomes experience I can share.</p>
           </div>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTER 7 -->
-    <section class="section section--chapter chapter--light" id="ch7">
+    <section class="section section--chapter chapter--light panel" id="ch7">
       <div class="container">
         <header class="chapter-header">
           <h2>Still Running</h2>
@@ -140,14 +142,18 @@
           <div class="chapter-text">
             <p>Things move more slowly now, and I notice what I used to rush past. The program does not need constant input to keep running. Everything I learned still exists, even when the pace is quiet.</p>
           </div>
+        </div>
+      </div>
     </section>
+  </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p> footer text / Code and Design II / Winter 2026</p>
+      <p>footer text / Code and Design II / Winter 2026</p>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="scripts/main.js"></script>
 </body>
 </html>
