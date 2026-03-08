@@ -15,10 +15,6 @@ body {
   line-height: var(--line-body);
 }
 
-/* =========================
-   Layout
-========================= */
-
 .container {
   width: min(var(--max-width), 100%);
   margin-inline: auto;
@@ -32,14 +28,10 @@ body {
   align-items: center;
 }
 
-/* =========================
-   Header
-========================= */
-
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   background: rgba(59, 28, 25, 0.92);
   backdrop-filter: blur(6px);
 }
@@ -56,12 +48,13 @@ body {
   margin: 0;
   font-family: var(--font-heading);
   color: var(--color-accent-two);
+  font-size: 1.25rem;
 }
 
 .site-nav {
   display: flex;
-  gap: var(--space-s);
   flex-wrap: wrap;
+  gap: var(--space-s);
 }
 
 .site-nav a {
@@ -69,10 +62,6 @@ body {
   color: var(--color-date-text);
   font-size: var(--text-small);
 }
-
-/* =========================
-   Skip Link
-========================= */
 
 .skip-link {
   position: absolute;
@@ -83,90 +72,107 @@ body {
 .skip-link:focus {
   left: var(--space-s);
   top: var(--space-s);
-  z-index: 20;
+  z-index: 30;
   background: var(--color-text-secondary);
   color: var(--color-background);
   padding: var(--space-xs) var(--space-s);
 }
 
-/* =========================
-   Hero
-========================= */
+.section-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
 
-.section--hero {
-  text-align: center;
+.hero-container {
+  width: 100%;
 }
 
 .hero-title {
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+}
+
+.hero-line {
+  display: block;
   font-family: var(--font-hero);
-  font-size: clamp(3rem, 8vw, var(--text-hero));
-  line-height: var(--line-tight);
-  margin-bottom: var(--space-m);
+  font-size: clamp(4rem, 13vw, 10rem);
   color: var(--color-accent-two);
+  text-shadow: -8px 8px 0 var(--color-text-primary);
+}
+
+.hero-line:first-child {
+  margin-bottom: 0.35em;
 }
 
 .hero-subtitle {
-  font-size: var(--text-h2);
+  max-width: 42rem;
+  margin-top: var(--space-xl);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
   color: var(--color-text-secondary);
-  max-width: 60ch;
-  margin-inline: auto;
 }
 
 .hero-meta {
   margin-top: var(--space-l);
+  color: var(--color-date-text);
+  font-size: var(--text-small);
 }
 
-/* =========================
-   Chapters
-========================= */
+.hero-meta p {
+  margin: 0.3rem 0;
+}
 
-.section--chapter h2 {
+.hint {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.section-chapter h2 {
   font-family: var(--font-heading);
-  font-size: var(--text-h2);
-  margin-bottom: var(--space-s);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin: 0 0 var(--space-s);
   color: var(--color-accent-two);
+  line-height: 0.95;
 }
 
 .chapter-kicker {
   color: var(--color-date-text);
   margin-bottom: var(--space-m);
+  font-size: 1.05rem;
 }
 
 .chapter-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr;
   gap: var(--space-xl);
 }
 
 .chapter-text p {
-  margin-bottom: var(--space-m);
+  margin: 0;
   max-width: 65ch;
+  font-size: 1.1rem;
 }
 
-/* =========================
-   Section Contrast
-========================= */
-
-.chapter--light {
+.chapter-light {
   background: var(--color-background);
 }
 
-.chapter--dark {
+.chapter-dark {
   background: #2f1715;
 }
 
-.chapter--accent {
+.chapter-accent {
   background: var(--color-accent);
   color: var(--color-text-secondary);
 }
 
-.chapter--accent h2 {
+.chapter-accent h2 {
   color: var(--color-date-text);
 }
-
-/* =========================
-   Footer
-========================= */
 
 .site-footer {
   padding-block: var(--space-l);
@@ -175,10 +181,6 @@ body {
 .site-footer p {
   margin: 0;
 }
-
-/* =========================
-   Links
-========================= */
 
 a {
   color: var(--color-date-text);
@@ -194,31 +196,27 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
-/* =========================
-   GSAP Initial States
-========================= */
+/* initial states for GSAP */
 
-.hero-title,
+.hero-line,
 .hero-subtitle,
-.hero-meta,
+.hero-meta p,
 .chapter-header h2,
 .chapter-kicker,
 .chapter-text p {
   opacity: 0;
 }
 
-/* =========================
-   Reduced Motion
-========================= */
+/* reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .hero-title,
+  .hero-line,
   .hero-subtitle,
-  .hero-meta,
+  .hero-meta p,
   .chapter-header h2,
   .chapter-kicker,
   .chapter-text p {
@@ -227,21 +225,35 @@ a:focus-visible {
   }
 }
 
-/* =========================
-   Responsive
-========================= */
-
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .header-inner {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .chapter-grid {
-    grid-template-columns: 1fr;
+  .site-nav {
+    gap: 0.75rem;
   }
+}
 
+@media (max-width: 640px) {
   .section {
     padding-block: var(--space-xl);
+  }
+
+  .hero-line {
+    text-shadow: -5px 5px 0 var(--color-text-primary);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-chapter h2 {
+    font-size: 2.5rem;
+  }
+
+  .chapter-text p {
+    font-size: 1rem;
   }
 }
