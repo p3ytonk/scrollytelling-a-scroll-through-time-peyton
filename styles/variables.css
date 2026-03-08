@@ -1,9 +1,4 @@
 :root {
-
-  /* =========================
-     COLOR TOKENS
-  ========================== */
-
   --color-background: #3B1C19;
   --color-text-primary: #CBDFBD;
   --color-text-secondary: #F6F4D2;
@@ -11,7 +6,6 @@
   --color-accent-two: #F19C79;
   --color-date-text: #D4E09B;
 
-  /* Primitive layer (optional use) */
   --brown-50: #3B1C19;
   --burntpeach-50: #A44A3F;
   --apricot-30: #F19C79;
@@ -19,38 +13,25 @@
   --cream-10: #F6F4D2;
   --mint-10: #CBDFBD;
 
-  /* =========================
-     TYPOGRAPHY TOKENS
-  ========================== */
-
   --font-hero: "Bayon", sans-serif;
   --font-heading: "Bayon", sans-serif;
   --font-body: "Baskerville", serif;
 
-  /* Convert px to rem (base 16px) */
-  --text-hero: 8rem;        /* 128px */
-  --text-h2: 1.5rem;        /* 24px */
-  --text-body: 1rem;        /* adjusted for readability */
+  --text-hero: 8rem;
+  --text-h2: 1.5rem;
+  --text-body: 1rem;
   --text-small: 0.875rem;
 
   --line-tight: 1.1;
   --line-body: 1.6;
 
-  /* =========================
-     SPACING TOKENS
-  ========================== */
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 2.5rem;
+  --space-xxl: 3.5rem;
 
-  --space-xs: 0.5rem;    /* 8px */
-  --space-s: 1rem;       /* 16px */
-  --space-m: 1.5rem;     /* 24px */
-  --space-l: 2rem;       /* 32px */
-  --space-xl: 2.5rem;    /* 40px */
-  --space-xxl: 3.5rem;   /* 56px */
-
-  /* Layout */
   --max-width: 72rem;
-
-  /* Radius */
   --radius-md: 1rem;
-
 }
