@@ -8,10 +8,11 @@ if (!prefersReducedMotion) {
   const heroTl = gsap.timeline();
 
   heroTl
-    .from(".hero-title", {
+    .from(".hero-line", {
       opacity: 0,
-      y: 50,
-      duration: 0.9,
+      x: -80,
+      duration: 1,
+      stagger: 0.18,
       ease: "power3.out"
     })
     .from(".hero-subtitle", {
@@ -19,16 +20,16 @@ if (!prefersReducedMotion) {
       y: 24,
       duration: 0.7,
       ease: "power2.out"
-    }, "-=0.4")
+    }, "-=0.45")
     .from(".hero-meta p", {
       opacity: 0,
-      y: 16,
+      y: 18,
       duration: 0.5,
       stagger: 0.12,
       ease: "power1.out"
-    }, "-=0.2");
+    }, "-=0.25");
 
-  const ch1Tl = gsap.timeline({ delay: 0.3 });
+  const ch1Tl = gsap.timeline({ delay: 0.35 });
 
   ch1Tl
     .from("#ch1 .chapter-header h2", {
@@ -44,7 +45,7 @@ if (!prefersReducedMotion) {
       ease: "power1.out"
     }, "-=0.2");
 
-  const ch2Tl = gsap.timeline({ delay: 0.6 });
+  const ch2Tl = gsap.timeline({ delay: 0.65 });
 
   ch2Tl
     .from("#ch2 .chapter-header h2", {
