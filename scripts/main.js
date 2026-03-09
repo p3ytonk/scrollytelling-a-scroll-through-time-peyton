@@ -1,3 +1,19 @@
+const themeToggle = document.getElementById("themeToggle");
+
+if (!document.body.dataset.theme) {
+  document.body.dataset.theme = "light";
+}
+
+themeToggle.addEventListener("change", () => {
+  const value = themeToggle.value;
+
+  if (value === "system") {
+    document.body.dataset.theme =
+      window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  } else {
+    document.body.dataset.theme = value;
+  }
+});
 gsap.registerPlugin(ScrollTrigger)
 
 const prefersReducedMotion = window.matchMedia(
