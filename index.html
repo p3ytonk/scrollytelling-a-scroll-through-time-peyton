@@ -1,165 +1,223 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A Scroll Through Time</title>
 
-  <link rel="stylesheet" href="styles/variables.css">
-  <link rel="stylesheet" href="styles/stylesheet.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Scroll Through Time</title>
+
+<link rel="stylesheet" href="styles/variables.css">
+<link rel="stylesheet" href="styles/stylesheet.css">
+
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <p class="site-title">A Scroll Through Time</p>
+<header class="site-header">
 
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#hero">Intro</a>
-        <a href="#ch1">Birth</a>
-        <a href="#ch2">Age 5</a>
-        <a href="#ch3">Age 16</a>
-        <a href="#ch4">Age 25</a>
-        <a href="#ch5">Age 40</a>
-        <a href="#ch6">Age 60</a>
-        <a href="#ch7">Age 80</a>
-      </nav>
-    </div>
-  </header>
+<div class="header-inner">
 
-  <main id="main">
-    <section class="section section-hero" id="hero">
-      <div class="container hero-container">
-        <h1 class="hero-title">
-          <span class="hero-line">A Scroll</span>
-          <span class="hero-line">Through Time</span>
-        </h1>
+<p class="site-title">A Scroll Through Time</p>
 
-        <p class="hero-subtitle">
-          Every scroll reveals a new chapter, just as every year reveals a new version of ourselves.
-        </p>
+<select id="themeToggle">
+<option value="system">System</option>
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
 
-        <div class="hero-meta">
-          <p>Peyton Knox / Code and Design II / Winter 2026</p>
-          <p class="hint">Scroll to begin</p>
-        </div>
-      </div>
-    </section>
+</div>
 
-    <section class="section section-chapter chapter-light" id="ch1">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Hello, World</h2>
-        </header>
+</header>
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>Just like a programmer’s first line of code, every life begins with a simple introduction: Hello, World. In JavaScript, this moment starts a program and prepares it to respond to events. In life, birth is the first event, the beginning of a timeline that will grow and change with time.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section class="section section-chapter chapter-dark" id="ch2">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>The Age of Wonder</h2>
-          <p class="chapter-kicker">Curiosity leads the way, and every moment invites discovery.</p>
-        </header>
+<main id="main">
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>At five years old, curiosity becomes the driving force. Like adding event listeners in JavaScript, every action creates a reaction and teaches something new. This is the stage where interaction begins, and the world responds back.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<section class="hero" id="hero">
 
-    <section class="section section-chapter chapter-accent" id="ch3">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Behind the Wheel</h2>
-          <p class="chapter-kicker">Control is in your hands, even if you are still learning.</p>
-        </header>
+<h1 class="hero-title">
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>I started realizing that code does not just run on its own. Every function, every variable, every line has a purpose. I am still learning how it all works, but I am beginning to see how the pieces connect.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<span>A Scroll</span>
+<span>Through Time</span>
 
-    <section class="section section-chapter chapter-light" id="ch4">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Full Volume</h2>
-          <p class="chapter-kicker">Energy runs high, and every event demands attention.</p>
-        </header>
+</h1>
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>At this stage, everything feels active at once. Like multiple events firing in JavaScript, there is constant input and constant reaction. I am still learning how to manage it all, figuring out how the system handles so much happening at the same time.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<p class="hero-subtitle">
+Every scroll reveals a new chapter of life.
+</p>
 
-    <section class="section section-chapter chapter-dark" id="ch5">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Built With Intention</h2>
-          <p class="chapter-kicker">Every choice is slower, steadier, and made with purpose.</p>
-        </header>
+</section>
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>I am starting to understand that good code is not rushed. Every function, every variable, every decision should have a clear purpose. Instead of just making it work, I am learning to slow down and build with intention.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section class="section section-chapter chapter-accent" id="ch6">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Passing Knowledge Down</h2>
-          <p class="chapter-kicker">Experience turns into guidance.</p>
-        </header>
+<section class="chapter" id="birth">
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>After spending time learning how everything connects, I begin to see the bigger picture. The mistakes, the debugging, and the slow progress all start to mean something. What once felt confusing now becomes experience I can share.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<p class="date">11 · 06 · 2001</p>
 
-    <section class="section section-chapter chapter-light" id="ch7">
-      <div class="container">
-        <header class="chapter-header">
-          <h2>Still Running</h2>
-          <p class="chapter-kicker">The pace slows, but the system continues.</p>
-        </header>
+<div class="comic">
 
-        <div class="chapter-grid">
-          <div class="chapter-text">
-            <p>Things move more slowly now, and I notice what I used to rush past. The program does not need constant input to keep running. Everything I learned still exists, even when the pace is quiet.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>Code and Design II / Winter 2026</p>
-    </div>
-  </footer>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-  <script src="scripts/main.js"></script>
+<h2 class="chapter-title">The Beginning</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2006</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Five</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2017</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Sixteen</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2026</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Twenty Five</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2041</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Forty</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2061</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Sixty</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<section class="chapter">
+
+<p class="date">11 · 06 · 2081</p>
+
+<div class="comic">
+
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+<div class="panel"></div>
+
+</div>
+
+<h2 class="chapter-title">Age Eighty</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+</section>
+
+
+<footer class="site-footer">
+
+<p>© Peyton Knox</p>
+<p>Code and Design II</p>
+<p>Co-created with ChatGPT</p>
+
+</footer>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+<script src="scripts/main.js"></script>
+
 </body>
 </html>
