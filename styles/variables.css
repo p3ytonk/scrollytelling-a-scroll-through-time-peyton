@@ -1,37 +1,27 @@
-:root {
-  --color-background: #3B1C19;
-  --color-text-primary: #CBDFBD;
-  --color-text-secondary: #F6F4D2;
-  --color-accent: #A44A3F;
-  --color-accent-two: #F19C79;
-  --color-date-text: #D4E09B;
+:root{
 
-  --brown-50: #3B1C19;
-  --burntpeach-50: #A44A3F;
-  --apricot-30: #F19C79;
-  --lime-29: #D4E09B;
-  --cream-10: #F6F4D2;
-  --mint-10: #CBDFBD;
+--brown:#3B1C19;
+--burnt:#A44A3F;
+--apricot:#F19C79;
+--cream:#F6F4D2;
+--mint:#CBDFBD;
+--lime:#D4E09B;
 
-  --font-hero: "Bayon", sans-serif;
-  --font-heading: "Bayon", sans-serif;
-  --font-body: "Baskerville", serif;
+--font-display:"Bayon", sans-serif;
+--font-body:"Baskerville", serif;
 
-  --text-hero: 8rem;
-  --text-h2: 1.5rem;
-  --text-body: 1rem;
-  --text-small: 0.875rem;
+}
 
-  --line-tight: 1.1;
-  --line-body: 1.6;
+body[data-theme="light"]{
 
-  --space-xs: 0.5rem;
-  --space-s: 1rem;
-  --space-m: 1.5rem;
-  --space-l: 2rem;
-  --space-xl: 2.5rem;
-  --space-xxl: 3.5rem;
+--bg:var(--apricot);
+--text:var(--brown);
 
-  --max-width: 72rem;
-  --radius-md: 1rem;
+}
+
+body[data-theme="dark"]{
+
+--bg:var(--brown);
+--text:var(--cream);
+
 }
