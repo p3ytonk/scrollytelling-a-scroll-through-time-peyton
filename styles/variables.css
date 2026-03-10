@@ -1,34 +1,16 @@
 :root {
-  --brown: #3B1C19;
-  --burnt: #A44A3F;
-  --apricot: #F19C79;
-  --cream: #F6F4D2;
-  --mint: #CBDFBD;
-  --lime: #D4E09B;
+  --brown: #1e2337;
+  --burnt: #4567d9;
+  --apricot: #8bf3ff;
+  --cream: #f7fbff;
+  --mint: #b0f1df;
+  --lime: #d8ffb6;
 
   --font-display: "Bayon", sans-serif;
   --font-body: "Baskerville", serif;
 
-  /* default theme */
-  --bg: var(--apricot);
-  --text: var(--brown);
-  --panel-bg: var(--cream);
-  --progress-track: var(--burnt);
-  --progress-fill: var(--brown);
-}
-
-body[data-theme="light"] {
-  --bg: var(--apricot);
-  --text: var(--brown);
-  --panel-bg: var(--cream);
-  --progress-track: var(--burnt);
-  --progress-fill: var(--brown);
-}
-
-body[data-theme="dark"] {
-  --bg: var(--brown);
-  --text: var(--cream);
-  --panel-bg: #f3e8d0;
-  --progress-track: var(--apricot);
-  --progress-fill: var(--cream);
-}
+  --bg: #050816;
+  --text: #ecf2ff;
+  --panel-bg: rgba(247, 251, 255, 0.08);
+  --progress-track: rgba(122, 157, 255, 0.35);
+  --progress-fill: #9fe5ff;

@@ -1,223 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>A Scroll Through Time</title>
-
-<link rel="stylesheet" href="styles/variables.css">
-<link rel="stylesheet" href="styles/stylesheet.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Scroll Through Time</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/stylesheet.css">
 </head>
-
 <body>
-
-<header class="site-header">
-
-<div class="header-inner">
-
-<p class="site-title">A Scroll Through Time</p>
-
-<select id="themeToggle">
-<option value="system">System</option>
-<option value="light">Light</option>
-<option value="dark">Dark</option>
-</select>
-
-</div>
-
-</header>
-
-
-<main id="main">
-
-<section class="hero" id="hero">
-
-<h1 class="hero-title">
-
-<span>A Scroll</span>
-<span>Through Time</span>
-
-</h1>
-
-<p class="hero-subtitle">
-Every scroll reveals a new chapter of life.
-</p>
-
-</section>
-
-
-<section class="chapter" id="birth">
-
-<p class="date">11 · 06 · 2001</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">The Beginning</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2006</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Five</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2017</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Sixteen</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2026</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Twenty Five</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2041</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Forty</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2061</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Sixty</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<p class="date">11 · 06 · 2081</p>
-
-<div class="comic">
-
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-<div class="panel"></div>
-
-</div>
-
-<h2 class="chapter-title">Age Eighty</h2>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-</section>
-
-
-<footer class="site-footer">
-
-<p>© Peyton Knox</p>
-<p>Code and Design II</p>
-<p>Co-created with ChatGPT</p>
-
-</footer>
-
-</main>
-
-
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-
-<script src="scripts/main.js"></script>
-
-</body>
-</html>
+  <div class="animated-bg" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+    <span class="orb orb-4"></span>
+    <span class="grid-overlay"></span>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="site-title">A Scroll Through Time</p>
+      <p class="chapter-indicator" aria-live="polite">Now viewing: Intro</p>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="hero" data-label="Intro">
+      <h1 class="hero-title">
+        <span>A Scroll</span>
+        <span>Through Time</span>
+      </h1>
+      <p class="hero-subtitle">Every scroll reveals a new chapter of life.</p>
+    </section>
+
+    <section class="chapter" id="birth" data-label="The Beginning">
+      <p class="date">11 · 06 · 2001</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">The Beginning</h2>
+      <p class="chapter-copy">A tiny apartment, a baby monitor, and two parents trying to whisper while laughing too loudly.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Five">
+      <p class="date">11 · 06 · 2006</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Five</h2>
+      <p class="chapter-copy">First backpack, untied shoes, and a giant imagination that turned every sidewalk crack into lava.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Sixteen">
+      <p class="date">11 · 06 · 2017</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Sixteen</h2>
+      <p class="chapter-copy">Late-night playlists, school deadlines, and the first time independence felt both thrilling and terrifying.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Twenty Five">
+      <p class="date">11 · 06 · 2026</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Twenty Five</h2>
+      <p class="chapter-copy">Work gets real, dreams get clearer, and the map of who you are begins to look like home.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Forty">
+      <p class="date">11 · 06 · 2041</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Forty</h2>
+      <p class="chapter-copy">The pace is faster now, but so is your confidence; priorities sharpen and small moments matter more.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Sixty">
+      <p class="date">11 · 06 · 2061</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Sixty</h2>
+      <p class="chapter-copy">Stories become legacy. You keep collecting sunsets, recipes, and names that shaped your life.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <section class="chapter" data-label="Age Eighty">
+      <p class="date">11 · 06 · 2081</p>
+      <div class="comic" aria-hidden="true">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+      <h2 class="chapter-title">Age Eighty</h2>
+      <p class="chapter-copy">The timeline bends into gratitude. Every chapter makes the next one softer, wiser, and brighter.</p>
+      <div class="progress"><div class="progress-bar"></div></div>
+    </section>
+
+    <footer class="site-footer">
+      <p>© Peyton Knox</p>
+      <p>Code and Design II</p>
+      <p>Co-created with ChatGPT</p>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="scripts/main.js"></script>
