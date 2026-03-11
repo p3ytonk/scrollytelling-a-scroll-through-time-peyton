@@ -123,6 +123,10 @@ body {
   padding: 120px 20px 40px;
 }
 
+.hero {
+  text-transform: uppercase;
+}
+
 .hero-title {
   font-family: var(--font-display);
   font-size: clamp(2.8rem, 8vw, 7rem);
