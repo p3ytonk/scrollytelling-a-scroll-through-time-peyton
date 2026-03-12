@@ -3,6 +3,8 @@ const storySections = gsap.utils.toArray("main section");
 const chapters = gsap.utils.toArray(".chapter");
 const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
+const heroTitle = document.querySelector(".hero-title");
+const heroTitleLines = gsap.utils.toArray(".hero-title-line");
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +12,130 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
+};
+
+const splitHeroTitle = () => {
+  if (!heroTitle) {
+    return [];
+  }
+
+  const letters = [];
+
+  heroTitleLines.forEach((line, lineIndex) => {
+    const text = (line.dataset.text || line.textContent || "").trim();
+
+    if (!text || line.querySelector(".hero-letter")) {
+      line.dataset.lineIndex = String(lineIndex);
+      return;
+    }
+
+    line.textContent = "";
+    line.dataset.lineIndex = String(lineIndex);
+    line.setAttribute("aria-hidden", "true");
+
+    [...text].forEach((character, characterIndex) => {
+      const letter = document.createElement("span");
+      const isSpace = character === " ";
+
+      letter.className = isSpace ? "hero-letter hero-letter-space" : "hero-letter";
+      letter.textContent = isSpace ? "\u00A0" : character;
+      letter.dataset.lineIndex = String(lineIndex);
+      letter.dataset.letterIndex = String(characterIndex);
+      line.appendChild(letter);
+      letters.push(letter);
+    });
+  });
+
+  heroTitle.setAttribute(
+    "aria-label",
+    heroTitleLines
+      .map((line) => line.dataset.text || line.textContent || "")
+      .join(" ")
+      .trim()
+  );
+
+  return letters;
+};
+
+const getLetterScatter = (letter) => {
+  const letterRect = letter.getBoundingClientRect();
+  const line = letter.closest(".hero-title-line");
+
+  if (!line) {
+    return { x: 0, y: 0, rotate: 0 };
+  }
+
+  const lineRect = line.getBoundingClientRect();
+  const lineIndex = Number(line.dataset.lineIndex || 0);
+  const letterIndex = Number(letter.dataset.letterIndex || 0);
+  const letterCenter = letterRect.left + letterRect.width / 2;
+  const lineCenter = lineRect.left + lineRect.width / 2;
+  const distanceFromCenter = letterCenter - lineCenter;
+  const direction = distanceFromCenter === 0 ? (letterIndex % 2 === 0 ? -1 : 1) : Math.sign(distanceFromCenter);
+  const spread = Math.abs(distanceFromCenter) * 0.65 + 36 + (letterIndex % 3) * 10;
+
+  return {
+    x: direction * spread,
+    y: (lineIndex === 0 ? -1 : 1) * (18 + (letterIndex % 4) * 8),
+    rotate: direction * (5 + (letterIndex % 5) * 1.8),
+  };
+};
+
+const initHeroTitleAnimation = () => {
+  const heroLetters = splitHeroTitle();
+
+  if (!heroLetters.length || prefersReducedMotion) {
+    return;
+  }
+
+  gsap.set(heroLetters, {
+    display: "inline-block",
+    willChange: "transform, opacity",
+  });
+
+  gsap.from(heroLetters, {
+    xPercent: -18,
+    yPercent: 120,
+    opacity: 0,
+    rotate: -6,
+    stagger: {
+      each: 0.035,
+      from: "start",
+    },
+    duration: 0.95,
+    ease: "power3.out",
+  });
+
+  gsap.from(".hero-subtitle", {
+    y: 40,
+    opacity: 0,
+    delay: 0.45,
+    duration: 1,
+  });
+
+  gsap.to(heroLetters, {
+    x: (_, letter) => getLetterScatter(letter).x,
+    y: (_, letter) => getLetterScatter(letter).y,
+    rotate: (_, letter) => getLetterScatter(letter).rotate,
+    opacity: (_, letter) => (letter.classList.contains("hero-letter-space") ? 1 : 0.2),
+    ease: "none",
+    stagger: {
+      each: 0.01,
+      from: "center",
+    },
+    scrollTrigger: {
+      trigger: "#hero",
+      horizontal: true,
+      start: "left left",
+      end: "right left",
+      scrub: 1.2,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
 };
 
 const installHorizontalWheelScroll = () => {
@@ -330,23 +456,9 @@ const initLiquidGradient = () => {
 
 initLiquidGradient();
 installHorizontalWheelScroll();
+initHeroTitleAnimation();
 
 if (!prefersReducedMotion) {
-  gsap.from(".hero-title span", {
-    y: 80,
-    opacity: 0,
-    stagger: 0.2,
-    duration: 1,
-    ease: "power3.out",
-  });
-
-  gsap.from(".hero-subtitle", {
-    y: 40,
-    opacity: 0,
-    delay: 0.5,
-    duration: 1,
-  });
-
   orbs.forEach((orb, index) => {
     const drift = 90 + index * 35;
 

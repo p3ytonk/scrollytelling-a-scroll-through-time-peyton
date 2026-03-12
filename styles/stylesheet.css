@@ -196,6 +196,7 @@ body {
   position: relative;
   display: block;
   width: max-content;
+  white-space: nowrap;
 }
 
 .hero-title-line::before {
@@ -210,6 +211,16 @@ body {
 
 .hero-title-line:last-child {
   margin-top: 0.6em;
+}
+
+.hero-letter {
+  position: relative;
+  display: inline-block;
+  transform-origin: 50% 70%;
+}
+
+.hero-letter-space {
+  min-width: 0.36em;
 }
 
 .hero-subtitle,
