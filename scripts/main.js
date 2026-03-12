@@ -1,4 +1,5 @@
 const chapterIndicator = document.querySelector(".chapter-indicator");
+const storySections = gsap.utils.toArray("main section");
 const chapters = gsap.utils.toArray(".chapter");
 const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
@@ -9,6 +10,34 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
+};
+
+const installHorizontalWheelScroll = () => {
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    return;
+  }
+
+  window.addEventListener(
+    "wheel",
+    (event) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+        return;
+      }
+
+      const maxScroll = document.documentElement.scrollWidth - window.innerWidth;
+
+      if (maxScroll <= 0) {
+        return;
+      }
+
+      event.preventDefault();
+      window.scrollBy({
+        left: event.deltaY,
+        behavior: "auto",
+      });
+    },
+    { passive: false }
+  );
 };
 
 class TouchTexture {
@@ -71,8 +100,8 @@ class TouchTexture {
       radius
     );
 
-    gradient.addColorStop(0, `rgba(255, 255, 255, ${intensity * 0.35})`);
-    gradient.addColorStop(0.35, `rgba(241, 156, 121, ${intensity * 0.18})`);
+    gradient.addColorStop(0, `rgba(120, 120, 120, ${intensity * 0.24})`);
+    gradient.addColorStop(0.45, `rgba(70, 70, 70, ${intensity * 0.12})`);
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
     this.context.beginPath();
@@ -180,11 +209,12 @@ const initLiquidGradient = () => {
         vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
         vec2 centered = (uv - 0.5) * aspect;
         vec2 mouse = (u_mouse - 0.5) * aspect;
+        vec2 toMouse = centered - mouse;
         float distToMouse = length(centered - mouse);
-        float hoverGlow = smoothstep(0.7, 0.05, distToMouse) * u_hover;
+        float hoverInfluence = smoothstep(0.9, 0.0, distToMouse) * u_hover;
 
         vec4 touch = texture2D(u_touch, uv);
-        float trail = touch.r;
+        float ripple = touch.r;
 
         vec2 flow = centered;
         flow.x += 0.25 * sin(flow.y * 3.1 + u_time * 0.28);
@@ -198,14 +228,19 @@ const initLiquidGradient = () => {
           fieldA - fieldB,
           fieldC - fieldA
         );
+        vec2 flowDirection = normalize(distortion + vec2(0.0001));
+        vec2 cursorDirection = normalize(toMouse + vec2(0.0001));
+        vec2 swirlDirection = vec2(-cursorDirection.y, cursorDirection.x);
+        float cursorPressure = hoverInfluence * (0.9 + ripple * 1.9);
 
         uv += distortion * 0.08;
-        uv += (u_mouse - 0.5) * 0.035 * (0.35 + hoverGlow);
-        uv += (touch.rg - 0.5) * 0.22;
+        uv += cursorDirection * (-0.085 * cursorPressure);
+        uv += swirlDirection * sin(distToMouse * 24.0 - u_time * 1.4) * (0.008 * cursorPressure);
+        uv += flowDirection * (0.055 * ripple);
+        uv += distortion * (ripple * 0.26 + hoverInfluence * 0.14);
 
         float swirl = fbm(uv * 5.4 + vec2(u_time * 0.1, -u_time * 0.08));
-        float bloom = smoothstep(0.22, 1.0, trail + hoverGlow * 0.55);
-        float highlight = smoothstep(0.48, 0.92, fieldB + swirl * 0.38 + bloom * 0.25);
+        float highlight = smoothstep(0.48, 0.92, fieldB + swirl * 0.38);
 
         vec3 deep = vec3(0.12, 0.07, 0.06);
         vec3 clay = vec3(0.643, 0.29, 0.247);
@@ -215,10 +250,9 @@ const initLiquidGradient = () => {
 
         vec3 color = deep;
         color = mix(color, clay, smoothstep(0.16, 0.82, fieldA));
-        color = mix(color, sage, smoothstep(0.26, 0.88, fieldB + trail * 0.5));
-        color = mix(color, peach, smoothstep(0.38, 0.95, fieldC + hoverGlow * 0.35));
+        color = mix(color, sage, smoothstep(0.26, 0.88, fieldB));
+        color = mix(color, peach, smoothstep(0.38, 0.95, fieldC));
         color += haze * highlight * 0.28;
-        color += peach * bloom * 0.18;
 
         float vignette = smoothstep(1.28, 0.18, length(centered));
         color *= 0.72 + vignette * 0.52;
@@ -295,6 +329,7 @@ const initLiquidGradient = () => {
 };
 
 initLiquidGradient();
+installHorizontalWheelScroll();
 
 if (!prefersReducedMotion) {
   gsap.from(".hero-title span", {
@@ -316,13 +351,14 @@ if (!prefersReducedMotion) {
     const drift = 90 + index * 35;
 
     gsap.to(orb, {
-      y: -drift,
-      x: index % 2 === 0 ? drift * 0.35 : -drift * 0.35,
+      x: index % 2 === 0 ? drift : -drift,
+      y: index % 2 === 0 ? -drift * 0.18 : drift * 0.18,
       ease: "none",
       scrollTrigger: {
         trigger: "#main",
-        start: "top top",
-        end: "bottom bottom",
+        horizontal: true,
+        start: "left left",
+        end: "right right",
         scrub: true,
       },
     });
@@ -337,9 +373,10 @@ if (!prefersReducedMotion) {
     gsap.from(comic, {
       scrollTrigger: {
         trigger: section,
-        start: "top 80%",
+        horizontal: true,
+        start: "left 80%",
       },
-      y: 90,
+      x: 90,
       opacity: 0,
       duration: 0.9,
       ease: "power2.out",
@@ -348,10 +385,11 @@ if (!prefersReducedMotion) {
     gsap.from(panels, {
       scrollTrigger: {
         trigger: section,
-        start: "top 78%",
+        horizontal: true,
+        start: "left 78%",
       },
       opacity: 0,
-      y: 30,
+      x: 30,
       stagger: 0.12,
       duration: 0.65,
     });
@@ -361,18 +399,11 @@ if (!prefersReducedMotion) {
       ease: "none",
       scrollTrigger: {
         trigger: section,
-        start: "top 75%",
-        end: "bottom 40%",
+        horizontal: true,
+        start: "left 75%",
+        end: "right 40%",
         scrub: true,
       },
-    });
-
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top center",
-      end: "bottom center",
-      onEnter: () => updateIndicator(sectionLabel),
-      onEnterBack: () => updateIndicator(sectionLabel),
     });
   });
 } else {
@@ -381,3 +412,14 @@ if (!prefersReducedMotion) {
     progressBar.style.width = "100%";
   });
 }
+
+storySections.forEach((section) => {
+  ScrollTrigger.create({
+    trigger: section,
+    horizontal: true,
+    start: "left center",
+    end: "right center",
+    onEnter: () => updateIndicator(section.dataset.label || "Chapter"),
+    onEnterBack: () => updateIndicator(section.dataset.label || "Chapter"),
+  });
+});
