@@ -1,6 +1,7 @@
 const chapterIndicator = document.querySelector(".chapter-indicator");
 const chapters = gsap.utils.toArray(".chapter");
 const orbs = gsap.utils.toArray(".orb");
+const liquidGradientRoot = document.querySelector("#liquid-gradient");
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,6 +10,291 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
 };
+
+class TouchTexture {
+  constructor(size = 128) {
+    this.size = size;
+    this.maxAge = 64;
+    this.radius = 0.14;
+    this.canvas = document.createElement("canvas");
+    this.canvas.width = size;
+    this.canvas.height = size;
+    this.context = this.canvas.getContext("2d");
+    this.texture = new THREE.CanvasTexture(this.canvas);
+    this.texture.minFilter = THREE.LinearFilter;
+    this.texture.magFilter = THREE.LinearFilter;
+    this.texture.wrapS = THREE.ClampToEdgeWrapping;
+    this.texture.wrapT = THREE.ClampToEdgeWrapping;
+    this.trail = [];
+    this.clear();
+  }
+
+  clear() {
+    this.context.fillStyle = "black";
+    this.context.fillRect(0, 0, this.size, this.size);
+  }
+
+  addTouch(point) {
+    const last = this.trail[0];
+    let velocity = 0;
+
+    if (last) {
+      const dx = point.x - last.x;
+      const dy = point.y - last.y;
+      velocity = Math.min(Math.sqrt(dx * dx + dy * dy) * 7.5, 1);
+    }
+
+    this.trail.unshift({
+      x: point.x,
+      y: point.y,
+      age: 0,
+      force: Math.max(0.18, velocity),
+    });
+  }
+
+  drawPoint(point) {
+    const intensity = 1 - point.age / this.maxAge;
+
+    if (intensity <= 0) {
+      return;
+    }
+
+    const canvasX = point.x * this.size;
+    const canvasY = (1 - point.y) * this.size;
+    const radius = this.size * this.radius * (0.65 + point.force * 0.6);
+    const gradient = this.context.createRadialGradient(
+      canvasX,
+      canvasY,
+      radius * 0.1,
+      canvasX,
+      canvasY,
+      radius
+    );
+
+    gradient.addColorStop(0, `rgba(255, 255, 255, ${intensity * 0.35})`);
+    gradient.addColorStop(0.35, `rgba(241, 156, 121, ${intensity * 0.18})`);
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+    this.context.beginPath();
+    this.context.fillStyle = gradient;
+    this.context.arc(canvasX, canvasY, radius, 0, Math.PI * 2);
+    this.context.fill();
+  }
+
+  update() {
+    this.clear();
+    this.trail = this.trail.filter((point) => point.age <= this.maxAge);
+
+    for (const point of this.trail) {
+      this.drawPoint(point);
+      point.age += 1;
+    }
+
+    this.texture.needsUpdate = true;
+  }
+}
+
+const initLiquidGradient = () => {
+  if (!liquidGradientRoot || prefersReducedMotion || typeof THREE === "undefined") {
+    return null;
+  }
+
+  let renderer;
+
+  try {
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+  } catch (error) {
+    return null;
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+  renderer.domElement.setAttribute("aria-hidden", "true");
+  liquidGradientRoot.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+  camera.position.z = 1;
+
+  const touchTexture = new TouchTexture(128);
+  const uniforms = {
+    u_time: { value: 0 },
+    u_resolution: { value: new THREE.Vector2(1, 1) },
+    u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+    u_hover: { value: 0 },
+    u_touch: { value: touchTexture.texture },
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      uniform float u_time;
+      uniform vec2 u_resolution;
+      uniform vec2 u_mouse;
+      uniform float u_hover;
+      uniform sampler2D u_touch;
+
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+      }
+
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
+          mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+          u.y
+        );
+      }
+
+      float fbm(vec2 p) {
+        float value = 0.0;
+        float amplitude = 0.5;
+
+        for (int i = 0; i < 5; i++) {
+          value += amplitude * noise(p);
+          p *= 2.02;
+          amplitude *= 0.5;
+        }
+
+        return value;
+      }
+
+      void main() {
+        vec2 uv = vUv;
+        vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
+        vec2 centered = (uv - 0.5) * aspect;
+        vec2 mouse = (u_mouse - 0.5) * aspect;
+        float distToMouse = length(centered - mouse);
+        float hoverGlow = smoothstep(0.7, 0.05, distToMouse) * u_hover;
+
+        vec4 touch = texture2D(u_touch, uv);
+        float trail = touch.r;
+
+        vec2 flow = centered;
+        flow.x += 0.25 * sin(flow.y * 3.1 + u_time * 0.28);
+        flow.y += 0.18 * cos(flow.x * 3.7 - u_time * 0.24);
+
+        float fieldA = fbm(flow * 2.0 + vec2(u_time * 0.08, -u_time * 0.05));
+        float fieldB = fbm(flow * 3.4 - vec2(u_time * 0.06, u_time * 0.09));
+        float fieldC = fbm(flow * 4.2 + vec2(-u_time * 0.05, u_time * 0.04));
+
+        vec2 distortion = vec2(
+          fieldA - fieldB,
+          fieldC - fieldA
+        );
+
+        uv += distortion * 0.08;
+        uv += (u_mouse - 0.5) * 0.035 * (0.35 + hoverGlow);
+        uv += (touch.rg - 0.5) * 0.22;
+
+        float swirl = fbm(uv * 5.4 + vec2(u_time * 0.1, -u_time * 0.08));
+        float bloom = smoothstep(0.22, 1.0, trail + hoverGlow * 0.55);
+        float highlight = smoothstep(0.48, 0.92, fieldB + swirl * 0.38 + bloom * 0.25);
+
+        vec3 deep = vec3(0.12, 0.07, 0.06);
+        vec3 clay = vec3(0.643, 0.29, 0.247);
+        vec3 sage = vec3(0.831, 0.878, 0.608);
+        vec3 peach = vec3(0.945, 0.612, 0.475);
+        vec3 haze = vec3(0.992, 0.965, 0.88);
+
+        vec3 color = deep;
+        color = mix(color, clay, smoothstep(0.16, 0.82, fieldA));
+        color = mix(color, sage, smoothstep(0.26, 0.88, fieldB + trail * 0.5));
+        color = mix(color, peach, smoothstep(0.38, 0.95, fieldC + hoverGlow * 0.35));
+        color += haze * highlight * 0.28;
+        color += peach * bloom * 0.18;
+
+        float vignette = smoothstep(1.28, 0.18, length(centered));
+        color *= 0.72 + vignette * 0.52;
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `,
+  });
+
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+  scene.add(mesh);
+
+  const resize = () => {
+    const { width, height } = liquidGradientRoot.getBoundingClientRect();
+
+    renderer.setSize(width, height, false);
+    uniforms.u_resolution.value.set(width, height);
+  };
+
+  const pointer = new THREE.Vector2(0.5, 0.5);
+
+  const movePointer = (event) => {
+    const rect = liquidGradientRoot.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = 1 - (event.clientY - rect.top) / rect.height;
+
+    pointer.set(gsap.utils.clamp(0, 1, x), gsap.utils.clamp(0, 1, y));
+    touchTexture.addTouch(pointer);
+    gsap.to(uniforms.u_hover, {
+      value: 1,
+      duration: 0.45,
+      overwrite: true,
+      ease: "power2.out",
+    });
+  };
+
+  const onLeave = () => {
+    gsap.to(uniforms.u_hover, {
+      value: 0,
+      duration: 0.8,
+      overwrite: true,
+      ease: "power2.out",
+    });
+  };
+
+  window.addEventListener("pointermove", movePointer);
+  document.addEventListener("pointerleave", onLeave);
+  window.addEventListener("resize", resize);
+
+  let frameId = 0;
+
+  const render = () => {
+    uniforms.u_time.value += 0.01;
+    uniforms.u_mouse.value.lerp(pointer, 0.085);
+    touchTexture.update();
+    renderer.render(scene, camera);
+    frameId = window.requestAnimationFrame(render);
+  };
+
+  resize();
+  document.body.classList.add("liquid-gradient-ready");
+  render();
+
+  return () => {
+    window.cancelAnimationFrame(frameId);
+    window.removeEventListener("pointermove", movePointer);
+    document.removeEventListener("pointerleave", onLeave);
+    window.removeEventListener("resize", resize);
+    material.dispose();
+    mesh.geometry.dispose();
+    touchTexture.texture.dispose();
+    renderer.dispose();
+  };
+};
+
+initLiquidGradient();
 
 if (!prefersReducedMotion) {
   gsap.from(".hero-title span", {

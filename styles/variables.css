@@ -1,16 +1,21 @@
 :root {
-  --brown: #1e2337;
-  --burnt: #4567d9;
-  --apricot: #8bf3ff;
-  --cream: #f7fbff;
-  --mint: #b0f1df;
-  --lime: #d8ffb6;
+  --clay: #a44a3f;
+  --sage: #d4e09b;
+  --mist: #cbdfbd;
+  --peach: #f19c79;
+  --cream: #f6f4d2;
+  --ink: #4f1d18;
 
   --font-display: "Bayon", sans-serif;
   --font-body: "Baskerville", serif;
 
-  --bg: #050816;
-  --text: #ecf2ff;
-  --panel-bg: rgba(247, 251, 255, 0.08);
-  --progress-track: rgba(122, 157, 255, 0.35);
-  --progress-fill: #9fe5ff;
+  --bg: #140c0a;
+  --text: #f6f4d2;
+  --text-muted: #cbdfbd;
+  --panel-bg: rgba(246, 244, 210, 0.09);
+  --panel-border: rgba(246, 244, 210, 0.32);
+  --header-bg: rgba(79, 29, 24, 0.72);
+  --header-border: rgba(212, 224, 155, 0.24);
+  --progress-track: rgba(212, 224, 155, 0.24);
+  --progress-fill: linear-gradient(90deg, #d4e09b 0%, #f19c79 100%);
+}
