@@ -14,38 +14,6 @@ const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
 };
 
-const applyDepthTransform = (element, progress, config = {}) => {
-  if (!element) {
-    return;
-  }
-
-  const {
-    nearZ = 140,
-    farZ = -520,
-    nearScale = 1.04,
-    farScale = 0.8,
-    rotate = 9,
-    minOpacity = 0.35,
-    maxBlur = 10,
-  } = config;
-
-  const distanceFromCenter = Math.abs(progress - 0.5) * 2;
-  const focus = 1 - distanceFromCenter;
-  const direction = progress < 0.5 ? 1 : -1;
-
-  gsap.set(element, {
-    z: gsap.utils.interpolate(nearZ, farZ, distanceFromCenter),
-    scale: gsap.utils.interpolate(nearScale, farScale, distanceFromCenter),
-    rotateY: direction * distanceFromCenter * rotate,
-    opacity: gsap.utils.interpolate(1, minOpacity, distanceFromCenter),
-    filter: `blur(${(distanceFromCenter * maxBlur).toFixed(2)}px)`,
-    transformOrigin: "50% 50%",
-    force3D: true,
-  });
-
-  return focus;
-};
-
 const splitHeroTitle = () => {
   if (!heroTitle) {
     return [];
@@ -560,10 +528,6 @@ if (!prefersReducedMotion) {
     const comic = section.querySelector(".comic");
     const panels = section.querySelectorAll(".panel");
     const progressBar = section.querySelector(".progress-bar");
-    const date = section.querySelector(".date");
-    const title = section.querySelector(".chapter-title");
-    const copy = section.querySelector(".chapter-copy");
-    const progressTrack = section.querySelector(".progress");
 
     gsap.from(comic, {
       scrollTrigger: {
@@ -598,114 +562,6 @@ if (!prefersReducedMotion) {
         start: "left 75%",
         end: "right 40%",
         scrub: true,
-      },
-    });
-
-    ScrollTrigger.create({
-      trigger: section,
-      horizontal: true,
-      start: "left right",
-      end: "right left",
-      scrub: true,
-      onUpdate: ({ progress }) => {
-        applyDepthTransform(section, progress, {
-          nearZ: 120,
-          farZ: -360,
-          nearScale: 1.02,
-          farScale: 0.88,
-          rotate: 6,
-          minOpacity: 0.5,
-          maxBlur: 4,
-        });
-
-        applyDepthTransform(comic, progress, {
-          nearZ: 200,
-          farZ: -320,
-          nearScale: 1.1,
-          farScale: 0.84,
-          rotate: 0,
-          minOpacity: 0.52,
-          maxBlur: 6,
-        });
-
-        applyDepthTransform(title, progress, {
-          nearZ: 170,
-          farZ: -470,
-          nearScale: 1.06,
-          farScale: 0.8,
-          rotate: 8,
-          minOpacity: 0.34,
-          maxBlur: 7,
-        });
-
-        applyDepthTransform(copy, progress, {
-          nearZ: 120,
-          farZ: -380,
-          nearScale: 1.03,
-          farScale: 0.82,
-          rotate: 7,
-          minOpacity: 0.3,
-          maxBlur: 8,
-        });
-
-        applyDepthTransform(date, progress, {
-          nearZ: 200,
-          farZ: -420,
-          nearScale: 1.08,
-          farScale: 0.76,
-          rotate: 10,
-          minOpacity: 0.26,
-          maxBlur: 8,
-        });
-
-        applyDepthTransform(progressTrack, progress, {
-          nearZ: 130,
-          farZ: -320,
-          nearScale: 1.04,
-          farScale: 0.82,
-          rotate: 6,
-          minOpacity: 0.32,
-          maxBlur: 6,
-        });
-
-        panels.forEach((panel, index) => {
-          const panelOffset = gsap.utils.clamp(0, 1, progress + (index - 1.5) * 0.035);
-
-          applyDepthTransform(panel, panelOffset, {
-            nearZ: 120 + index * 12,
-            farZ: -140 - index * 12,
-            nearScale: 1.02,
-            farScale: 0.92,
-            rotate: 0,
-            minOpacity: 0.62,
-            maxBlur: 2,
-          });
-        });
-      },
-    });
-  });
-
-  storySections.forEach((section) => {
-    if (section.classList.contains("chapter")) {
-      return;
-    }
-
-    ScrollTrigger.create({
-      trigger: section,
-      horizontal: true,
-      start: "left right",
-      end: "right left",
-      scrub: true,
-      onUpdate: ({ progress }) => {
-        applyDepthTransform(section, progress, {
-          nearZ: 70,
-          farZ: -150,
-          nearScale: 1.01,
-          farScale: 0.94,
-          rotate: 3,
-          minOpacity: 0.78,
-          maxBlur: 2,
-        });
       },
     });
   });
