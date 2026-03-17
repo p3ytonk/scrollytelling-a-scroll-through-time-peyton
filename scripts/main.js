@@ -1,6 +1,7 @@
 const chapterIndicator = document.querySelector(".chapter-indicator");
 const storySections = gsap.utils.toArray("main section");
 const chapters = gsap.utils.toArray(".chapter");
+const progressBars = gsap.utils.toArray(".progress-bar");
 const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
 const heroTitle = document.querySelector(".hero-title");
@@ -12,6 +13,15 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
+};
+
+const updateStoryProgress = () => {
+  const maxScroll = document.documentElement.scrollWidth - window.innerWidth;
+  const progress = maxScroll <= 0 ? 0 : gsap.utils.clamp(0, 1, window.scrollX / maxScroll);
+
+  gsap.set(progressBars, {
+    scaleX: progress,
+  });
 };
 
 const splitHeroTitle = () => {
@@ -527,7 +537,6 @@ if (!prefersReducedMotion) {
   chapters.forEach((section) => {
     const comic = section.querySelector(".comic");
     const panels = section.querySelectorAll(".panel");
-    const progressBar = section.querySelector(".progress-bar");
 
     gsap.from(comic, {
       scrollTrigger: {
@@ -539,6 +548,7 @@ if (!prefersReducedMotion) {
       opacity: 0,
       duration: 0.9,
       ease: "power2.out",
+      immediateRender: false,
     });
 
     gsap.from(panels, {
@@ -551,26 +561,14 @@ if (!prefersReducedMotion) {
       x: 30,
       stagger: 0.12,
       duration: 0.65,
+      immediateRender: false,
     });
-
-    gsap.to(progressBar, {
-      width: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        horizontal: true,
-        start: "left 75%",
-        end: "right 40%",
-        scrub: true,
-      },
-    });
-  });
-} else {
-  chapters.forEach((section) => {
-    const progressBar = section.querySelector(".progress-bar");
-    progressBar.style.width = "100%";
   });
 }
+
+updateStoryProgress();
+window.addEventListener("scroll", updateStoryProgress, { passive: true });
+window.addEventListener("resize", updateStoryProgress);
 
 storySections.forEach((section) => {
   ScrollTrigger.create({

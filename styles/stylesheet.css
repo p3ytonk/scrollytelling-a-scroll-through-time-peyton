@@ -180,7 +180,7 @@ body {
 
 .hero {
   text-transform: uppercase;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .hero-title {
@@ -189,7 +189,7 @@ body {
   line-height: 0.82;
   letter-spacing: 0.04em;
   color: var(--ink);
-  text-align: left;
+  text-align: center;
   width: min(1000px, 100%);
   text-shadow: none;
 }
@@ -256,21 +256,48 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  padding: 34px;
+  justify-content: center;
+  align-content: center;
+  place-items: stretch;
+  gap: 14px;
+  padding: 28px;
   background:
     linear-gradient(rgba(255, 248, 240, 0.94), rgba(247, 237, 228, 0.96)),
     radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 55%);
   border: 6px solid rgba(252, 248, 242, 0.9);
   box-shadow:
-    0 24px 50px rgba(20, 12, 10, 0.24),
-    0 0 0 1px rgba(43, 23, 20, 0.12) inset;
+    0 24px 50px rgba(20, 12, 10, 0.18),
+    0 0 0 1px rgba(43, 23, 20, 0.08) inset,
+    0 0 90px rgba(241, 156, 121, 0.2);
   overflow: hidden;
   will-change: transform, opacity;
+  isolation: isolate;
+}
+
+.comic::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255, 248, 240, 0.34), transparent 58%);
+  filter: blur(22px);
+  opacity: 0.7;
+}
+
+.comic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 60%, rgba(247, 237, 228, 0.18) 84%, rgba(247, 237, 228, 0.38) 100%);
 }
 
 .panel {
   position: relative;
+  z-index: 2;
   min-width: 0;
   min-height: 0;
   width: 100%;
@@ -279,7 +306,16 @@ body {
   border: 6px solid #111;
   border-radius: 0;
   box-shadow: none;
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+  transform-origin: center;
   will-change: transform, opacity;
+}
+
+.panel:hover {
+  animation: panel-shake 0.4s ease-in-out 2;
+  transform: scale(1.08);
+  z-index: 2;
+  box-shadow: 0 12px 24px rgba(20, 12, 10, 0.18);
 }
 
 .chapter-title {
@@ -291,18 +327,23 @@ body {
 }
 
 .progress {
-  width: min(320px, 80vw);
-  height: 14px;
-  background: var(--progress-track);
-  border-radius: 20px;
+  width: min(460px, 82vw);
+  height: 30px;
+  padding: 0;
+  background: #ab4e41;
+  border-radius: 999px;
   overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .progress-bar {
   height: 100%;
-  width: 0;
-  background: var(--progress-fill);
-  border-radius: 20px;
+  width: 100%;
+  background: #f29b74;
+  border-radius: 999px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .site-footer {
@@ -323,6 +364,15 @@ body {
 @keyframes float-1 {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(12vw, 18vh, 0) scale(1.1); }
+}
+
+@keyframes panel-shake {
+  0% { transform: scale(1.08) translate3d(0, 0, 0) rotate(0deg); }
+  20% { transform: scale(1.08) translate3d(-4px, 1px, 0) rotate(-1.2deg); }
+  40% { transform: scale(1.08) translate3d(4px, -1px, 0) rotate(1.2deg); }
+  60% { transform: scale(1.08) translate3d(-3px, 1px, 0) rotate(-0.8deg); }
+  80% { transform: scale(1.08) translate3d(3px, -1px, 0) rotate(0.8deg); }
+  100% { transform: scale(1.08) translate3d(0, 0, 0) rotate(0deg); }
 }
 
 @keyframes float-2 {
@@ -366,8 +416,8 @@ body {
 
   .comic {
     width: min(460px, 92vw);
-    gap: 14px;
-    padding: 20px;
+    gap: 10px;
+    padding: 18px;
   }
 
   .panel {
@@ -383,5 +433,15 @@ body {
   .orb {
     animation: none;
     opacity: 0.45;
+  }
+
+  .panel {
+    transition: none;
+  }
+
+  .panel:hover {
+    animation: none;
+    transform: none;
+    box-shadow: none;
   }
 }
