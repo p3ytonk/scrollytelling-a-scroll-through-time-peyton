@@ -6,6 +6,7 @@ const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
 const heroTitle = document.querySelector(".hero-title");
 const heroTitleLines = gsap.utils.toArray(".hero-title-line");
+const themeToggle = document.querySelector(".theme-toggle");
 const finalChapter = chapters[chapters.length - 1] || null;
 const finalProgressBar = progressBars[progressBars.length - 1] || null;
 const finalComic = finalChapter?.querySelector(".comic") || null;
@@ -17,6 +18,34 @@ gsap.registerPlugin(ScrollTrigger);
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let confettiLayer = null;
 let finaleTimeline = null;
+
+const applyTheme = (theme) => {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+
+  document.body.dataset.theme = nextTheme;
+
+  if (themeToggle) {
+    const isDark = nextTheme === "dark";
+    themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
+    themeToggle.setAttribute("aria-pressed", String(isDark));
+    themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+  }
+};
+
+const initThemeToggle = () => {
+  const savedTheme = window.localStorage.getItem("theme-preference");
+  applyTheme(savedTheme || "light");
+
+  if (!themeToggle) {
+    return;
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+    window.localStorage.setItem("theme-preference", nextTheme);
+  });
+};
 
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
@@ -272,7 +301,7 @@ const initHeroTitleAnimation = () => {
     x: (_, letter) => getLetterScatter(letter).x,
     y: (_, letter) => getLetterScatter(letter).y,
     rotate: (_, letter) => getLetterScatter(letter).rotate,
-    opacity: (_, letter) => (letter.classList.contains("hero-letter-space") ? 1 : 0.2),
+    opacity: (_, letter) => (letter.classList.contains("hero-letter-space") ? 1 : 0.68),
     ease: "none",
     stagger: {
       each: 0.01,
@@ -660,6 +689,7 @@ const initLiquidGradient = () => {
 initLiquidGradient();
 installHorizontalWheelScroll();
 initHeroTitleAnimation();
+initThemeToggle();
 
 if (!prefersReducedMotion) {
   orbs.forEach((orb, index) => {

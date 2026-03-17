@@ -5,6 +5,8 @@
   --peach: #f19c79;
   --cream: #f6f4d2;
   --ink: #4f1d18;
+  --paper: #fff8f0;
+  --paper-alt: #f7ede4;
 
   --font-display: "Bayon", sans-serif;
   --font-body: "Baskerville", serif;
@@ -12,10 +14,29 @@
   --bg: #140c0a;
   --text: #f6f4d2;
   --text-muted: #cbdfbd;
+  --comic-surface: linear-gradient(rgba(255, 248, 240, 0.94), rgba(247, 237, 228, 0.96));
+  --comic-highlight: radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 55%);
+  --comic-border: rgba(252, 248, 242, 0.9);
+  --comic-shadow: 0 24px 50px rgba(20, 12, 10, 0.18), 0 0 0 1px rgba(43, 23, 20, 0.08) inset, 0 0 90px rgba(241, 156, 121, 0.2);
+  --comic-glow: radial-gradient(circle at center, rgba(255, 248, 240, 0.34), transparent 58%);
+  --comic-vignette: radial-gradient(circle at center, transparent 60%, rgba(247, 237, 228, 0.18) 84%, rgba(247, 237, 228, 0.38) 100%);
+  --comic-panel-bg: #f7f1ea;
+  --comic-text: #4f1d18;
   --panel-bg: rgba(246, 244, 210, 0.09);
   --panel-border: rgba(246, 244, 210, 0.32);
   --header-bg: rgba(79, 29, 24, 0.72);
   --header-border: rgba(212, 224, 155, 0.24);
   --progress-track: rgba(212, 224, 155, 0.24);
   --progress-fill: linear-gradient(90deg, #d4e09b 0%, #f19c79 100%);
+}
+
+body[data-theme="dark"] {
+  --comic-surface: linear-gradient(rgba(79, 29, 24, 0.96), rgba(43, 23, 20, 0.98));
+  --comic-highlight: radial-gradient(circle at top, rgba(246, 244, 210, 0.09), transparent 55%);
+  --comic-border: rgba(79, 29, 24, 0.95);
+  --comic-shadow: 0 24px 50px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(246, 244, 210, 0.06) inset, 0 0 90px rgba(20, 12, 10, 0.38);
+  --comic-glow: radial-gradient(circle at center, rgba(246, 244, 210, 0.08), transparent 58%);
+  --comic-vignette: radial-gradient(circle at center, transparent 60%, rgba(20, 12, 10, 0.16) 84%, rgba(20, 12, 10, 0.34) 100%);
+  --comic-panel-bg: #2b1714;
+  --comic-text: #f6f4d2;
 }
