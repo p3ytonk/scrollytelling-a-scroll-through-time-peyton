@@ -6,10 +6,17 @@ const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
 const heroTitle = document.querySelector(".hero-title");
 const heroTitleLines = gsap.utils.toArray(".hero-title-line");
+const finalChapter = chapters[chapters.length - 1] || null;
+const finalProgressBar = progressBars[progressBars.length - 1] || null;
+const finalComic = finalChapter?.querySelector(".comic") || null;
+const finalProgressTrack = finalChapter?.querySelector(".progress") || null;
+const standardProgressBars = finalProgressBar ? progressBars.slice(0, -1) : progressBars;
 
 gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let confettiLayer = null;
+let finaleTimeline = null;
 
 const updateIndicator = (label) => {
   chapterIndicator.textContent = `Now viewing: ${label}`;
@@ -19,9 +26,147 @@ const updateStoryProgress = () => {
   const maxScroll = document.documentElement.scrollWidth - window.innerWidth;
   const progress = maxScroll <= 0 ? 0 : gsap.utils.clamp(0, 1, window.scrollX / maxScroll);
 
-  gsap.set(progressBars, {
-    scaleX: progress,
+  if (standardProgressBars.length) {
+    gsap.set(standardProgressBars, {
+      scaleX: progress,
+    });
+  }
+
+  if (finalProgressBar && !finaleTimeline?.scrollTrigger?.isActive) {
+    gsap.set(finalProgressBar, {
+      scaleX: progress,
+    });
+  }
+};
+
+const getConfettiLayer = () => {
+  if (confettiLayer) {
+    return confettiLayer;
+  }
+
+  confettiLayer = document.createElement("div");
+  confettiLayer.className = "confetti-layer";
+  confettiLayer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(confettiLayer);
+  return confettiLayer;
+};
+
+const clearConfetti = () => {
+  if (!confettiLayer) {
+    return;
+  }
+
+  gsap.killTweensOf(confettiLayer.children);
+  confettiLayer.replaceChildren();
+};
+
+const buildFinaleTimeline = () => {
+  if (!finalProgressBar || !finalProgressTrack) {
+    return null;
+  }
+
+  const timeline = gsap.timeline({ paused: true });
+
+  gsap.set(finalProgressBar, {
+    transformOrigin: "left center",
   });
+
+  timeline.to(finalProgressBar, {
+    scaleX: 1,
+    ease: "none",
+    duration: 0.24,
+  }, 0);
+
+  timeline.to(finalProgressTrack, {
+    boxShadow: "0 0 0 2px rgba(246, 244, 210, 0.18) inset, 0 0 28px rgba(241, 156, 121, 0.55)",
+    ease: "none",
+    duration: 0.04,
+  }, 0.24);
+
+  timeline.to(finalProgressTrack, {
+    keyframes: [
+      { x: -6, rotate: -1, duration: 0.025 },
+      { x: 6, rotate: 1, duration: 0.025 },
+      { x: -5, rotate: -0.8, duration: 0.025 },
+      { x: 5, rotate: 0.8, duration: 0.025 },
+      { x: -2, rotate: -0.3, duration: 0.02 },
+      { x: 0, rotate: 0, duration: 0.03 },
+    ],
+    ease: "none",
+  }, 0.27);
+
+  if (prefersReducedMotion) {
+    return timeline;
+  }
+
+  const layer = getConfettiLayer();
+  const colors = ["#f29b74", "#d4e09b", "#f6f4d2", "#ab4e41", "#cbdfbd"];
+  const pieceCount = 200;
+
+  clearConfetti();
+
+  for (let index = 0; index < pieceCount; index += 1) {
+    const piece = document.createElement("span");
+    const depth = Math.random();
+    const size = depth > 0.82
+      ? gsap.utils.random(24, 38, 1)
+      : depth > 0.42
+        ? gsap.utils.random(14, 24, 1)
+        : gsap.utils.random(8, 14, 1);
+    const startX = gsap.utils.random(0, window.innerWidth);
+    const startY = gsap.utils.random(-window.innerHeight * 0.45, -20);
+    const driftX = gsap.utils.random(-280, 280) * (0.65 + depth * 0.75);
+    const endY = window.innerHeight + gsap.utils.random(180, 420);
+    const startAt = gsap.utils.random(0.3, 0.52);
+    const fadeOutAt = gsap.utils.random(0.84, 0.98);
+    const midXOne = startX + driftX * 0.2;
+    const midXTwo = startX + driftX * 0.58;
+    const endX = startX + driftX;
+    const targetOpacity = 0.45 + depth * 0.55;
+    const startRotation = gsap.utils.random(-180, 180);
+    const endRotation = startRotation + gsap.utils.random(360, 1080);
+    const scale = 0.72 + depth * 0.7;
+
+    piece.className = "confetti-piece";
+    piece.style.width = `${size}px`;
+    piece.style.height = `${Math.max(6, size * gsap.utils.random(0.5, 1.4))}px`;
+    piece.style.background = colors[index % colors.length];
+    piece.style.borderRadius = `${gsap.utils.random(1, 4, 1)}px`;
+    layer.appendChild(piece);
+
+    timeline.set(piece, {
+      x: startX,
+      y: startY,
+      rotation: startRotation,
+      scale,
+      opacity: 0,
+    }, 0);
+
+    timeline.to(piece, {
+      opacity: targetOpacity,
+      ease: "none",
+      duration: 0.03,
+    }, startAt);
+
+    timeline.to(piece, {
+      keyframes: [
+        { x: midXOne, y: startY + (endY - startY) * 0.22 },
+        { x: midXTwo, y: startY + (endY - startY) * 0.58 },
+        { x: endX, y: endY },
+      ],
+      rotation: endRotation,
+      ease: "none",
+      duration: 1 - startAt,
+    }, startAt);
+
+    timeline.to(piece, {
+      opacity: 0,
+      ease: "none",
+      duration: 0.08,
+    }, fadeOutAt);
+  }
+
+  return timeline;
 };
 
 const splitHeroTitle = () => {
@@ -569,6 +714,31 @@ if (!prefersReducedMotion) {
 updateStoryProgress();
 window.addEventListener("scroll", updateStoryProgress, { passive: true });
 window.addEventListener("resize", updateStoryProgress);
+
+if (finalChapter && finalProgressBar) {
+  finaleTimeline = buildFinaleTimeline();
+
+  ScrollTrigger.create({
+    trigger: finalProgressTrack || finalComic || finalChapter,
+    horizontal: true,
+    start: "left 92%",
+    end: "right 48%",
+    scrub: 1.1,
+    animation: finaleTimeline,
+    invalidateOnRefresh: true,
+    onLeaveBack: () => {
+      if (finalProgressTrack) {
+        gsap.set(finalProgressTrack, {
+          x: 0,
+          rotate: 0,
+          clearProps: "boxShadow",
+        });
+      }
+
+      updateStoryProgress();
+    },
+  });
+}
 
 storySections.forEach((section) => {
   ScrollTrigger.create({
