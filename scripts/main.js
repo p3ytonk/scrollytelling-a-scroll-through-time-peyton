@@ -619,13 +619,13 @@ if (!prefersReducedMotion) {
         });
 
         applyDepthTransform(comic, progress, {
-          nearZ: 260,
-          farZ: -760,
-          nearScale: 1.12,
-          farScale: 0.68,
-          rotate: 12,
-          minOpacity: 0.28,
-          maxBlur: 12,
+          nearZ: 200,
+          farZ: -320,
+          nearScale: 1.1,
+          farScale: 0.84,
+          rotate: 0,
+          minOpacity: 0.52,
+          maxBlur: 6,
         });
 
         applyDepthTransform(title, progress, {
@@ -672,13 +672,13 @@ if (!prefersReducedMotion) {
           const panelOffset = gsap.utils.clamp(0, 1, progress + (index - 1.5) * 0.035);
 
           applyDepthTransform(panel, panelOffset, {
-            nearZ: 180 + index * 20,
-            farZ: -380 - index * 30,
-            nearScale: 1.04,
-            farScale: 0.82,
-            rotate: 8,
-            minOpacity: 0.4,
-            maxBlur: 5,
+            nearZ: 120 + index * 12,
+            farZ: -140 - index * 12,
+            nearScale: 1.02,
+            farScale: 0.92,
+            rotate: 0,
+            minOpacity: 0.62,
+            maxBlur: 2,
           });
         });
       },

@@ -254,25 +254,104 @@ body {
 }
 
 .comic {
-  width: min(520px, 92vw);
+  position: relative;
+  width: min(640px, 94vw);
   aspect-ratio: 1/1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 6px;
-  background: rgba(79, 29, 24, 0.32);
-  border: 1px solid var(--panel-border);
-  box-shadow: 0 16px 48px rgba(20, 12, 10, 0.32);
-  padding: 16px;
-  backdrop-filter: blur(7px);
+  gap: 24px;
+  padding: 34px;
+  background:
+    linear-gradient(rgba(255, 248, 240, 0.94), rgba(247, 237, 228, 0.96)),
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 55%);
+  border: 6px solid rgba(252, 248, 242, 0.9);
+  box-shadow:
+    0 24px 50px rgba(20, 12, 10, 0.24),
+    0 0 0 1px rgba(43, 23, 20, 0.12) inset;
+  overflow: hidden;
   transform-style: preserve-3d;
   will-change: transform, opacity, filter;
 }
 
 .panel {
-  background: linear-gradient(135deg, rgba(241, 156, 121, 0.92), rgba(164, 74, 63, 0.88));
-  border-radius: 8px;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background:
+    linear-gradient(180deg, rgba(243, 187, 216, 0.98), rgba(236, 165, 207, 0.98));
+  border: 6px solid #111;
+  border-radius: 0;
+  box-shadow: none;
   will-change: transform, opacity;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 244, 252, 0.45), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.04));
+}
+
+.panel:nth-child(1),
+.panel:nth-child(2) {
+  aspect-ratio: 1 / 1;
+}
+
+.panel:nth-child(3),
+.panel:nth-child(4) {
+  aspect-ratio: 1 / 1.08;
+}
+
+.panel:nth-child(1)::after {
+  content: "";
+  position: absolute;
+  inset: 10% 8%;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 248, 231, 0.72) 0 18%, transparent 19%),
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(20, 12, 10, 0.95) 0deg 7deg,
+      transparent 7deg 22deg
+    );
+  opacity: 0.85;
+  mask: radial-gradient(circle at 50% 52%, transparent 0 24%, black 25%);
+}
+
+.panel:nth-child(2)::after {
+  content: "PONPON!";
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-5deg);
+  color: rgba(255, 248, 231, 0.95);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 0.02em;
+}
+
+.panel:nth-child(3)::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 28%;
+  background:
+    radial-gradient(circle at 8px -6px, transparent 9px, #1c1a1e 10px) 0 0 / 20px 20px repeat-x,
+    linear-gradient(180deg, #3c234f 0%, #25162f 100%);
+}
+
+.panel:nth-child(4)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background:
+    linear-gradient(180deg, #ffd34f 0%, #efaf20 100%);
+  border-top: 6px solid #111;
 }
 
 .chapter-title {
@@ -356,6 +435,24 @@ body {
 
   .grid-overlay {
     background-size: 36px 36px;
+  }
+
+  .comic {
+    width: min(460px, 92vw);
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .panel {
+    border-width: 4px;
+  }
+
+  .panel:nth-child(2)::after {
+    font-size: clamp(1.7rem, 6vw, 2.5rem);
+  }
+
+  .panel:nth-child(4)::after {
+    border-top-width: 4px;
   }
 }
 
