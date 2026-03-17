@@ -175,6 +175,57 @@ const installHorizontalWheelScroll = () => {
     return;
   }
 
+  let targetScroll = window.scrollX;
+  let currentScroll = window.scrollX;
+  let rafId = 0;
+
+  const clampTarget = (value) => {
+    const maxScroll = document.documentElement.scrollWidth - window.innerWidth;
+    return gsap.utils.clamp(0, Math.max(0, maxScroll), value);
+  };
+
+  const animateScroll = () => {
+    currentScroll += (targetScroll - currentScroll) * 0.14;
+
+    if (Math.abs(targetScroll - currentScroll) < 0.5) {
+      currentScroll = targetScroll;
+    }
+
+    window.scrollTo({
+      left: currentScroll,
+      behavior: "auto",
+    });
+
+    if (Math.abs(targetScroll - currentScroll) >= 0.5) {
+      rafId = window.requestAnimationFrame(animateScroll);
+      return;
+    }
+
+    rafId = 0;
+  };
+
+  const queueScroll = (delta) => {
+    targetScroll = clampTarget(targetScroll + delta);
+
+    if (!rafId) {
+      rafId = window.requestAnimationFrame(animateScroll);
+    }
+  };
+
+  window.addEventListener("scroll", () => {
+    if (rafId) {
+      return;
+    }
+
+    currentScroll = window.scrollX;
+    targetScroll = window.scrollX;
+  });
+
+  window.addEventListener("resize", () => {
+    currentScroll = clampTarget(currentScroll);
+    targetScroll = clampTarget(targetScroll);
+  });
+
   window.addEventListener(
     "wheel",
     (event) => {
@@ -189,10 +240,7 @@ const installHorizontalWheelScroll = () => {
       }
 
       event.preventDefault();
-      window.scrollBy({
-        left: event.deltaY,
-        behavior: "auto",
-      });
+      queueScroll(event.deltaY);
     },
     { passive: false }
   );
@@ -650,13 +698,13 @@ if (!prefersReducedMotion) {
       scrub: true,
       onUpdate: ({ progress }) => {
         applyDepthTransform(section, progress, {
-          nearZ: 160,
-          farZ: -420,
-          nearScale: 1.04,
-          farScale: 0.82,
-          rotate: 7,
-          minOpacity: 0.42,
-          maxBlur: 7,
+          nearZ: 70,
+          farZ: -150,
+          nearScale: 1.01,
+          farScale: 0.94,
+          rotate: 3,
+          minOpacity: 0.78,
+          maxBlur: 2,
         });
       },
     });

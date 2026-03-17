@@ -16,9 +16,7 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  perspective: 1400px;
-  perspective-origin: 50% 50%;
+  scroll-snap-type: x proximity;
 }
 
 .animated-bg {
@@ -163,6 +161,8 @@ body {
   flex-direction: row;
   width: max-content;
   min-height: 100vh;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
   transform-style: preserve-3d;
 }
 
@@ -184,6 +184,7 @@ body {
 
 .hero {
   text-transform: uppercase;
+  align-items: flex-start;
 }
 
 .hero-title {
