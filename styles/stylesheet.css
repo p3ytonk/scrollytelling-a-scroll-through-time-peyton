@@ -17,6 +17,8 @@ body {
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
 }
 
 .animated-bg {
@@ -161,6 +163,7 @@ body {
   flex-direction: row;
   width: max-content;
   min-height: 100vh;
+  transform-style: preserve-3d;
 }
 
 .hero,
@@ -175,6 +178,8 @@ body {
   justify-content: center;
   text-align: center;
   padding: 120px 32px 48px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
 .hero {
@@ -248,22 +253,25 @@ body {
 }
 
 .comic {
-  width: min(460px, 90vw);
+  width: min(520px, 92vw);
   aspect-ratio: 1/1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 10px;
+  gap: 6px;
   background: rgba(79, 29, 24, 0.32);
   border: 1px solid var(--panel-border);
   box-shadow: 0 16px 48px rgba(20, 12, 10, 0.32);
-  padding: 20px;
+  padding: 16px;
   backdrop-filter: blur(7px);
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
 .panel {
   background: linear-gradient(135deg, rgba(241, 156, 121, 0.92), rgba(164, 74, 63, 0.88));
   border-radius: 8px;
+  will-change: transform, opacity;
 }
 
 .chapter-title {
@@ -301,6 +309,8 @@ body {
   gap: 10px;
   text-align: center;
   color: var(--mist);
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
 }
 
 @keyframes float-1 {
