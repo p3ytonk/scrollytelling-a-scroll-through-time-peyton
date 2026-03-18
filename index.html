@@ -24,7 +24,14 @@
     <div class="header-inner">
       <p class="site-title">A Scroll Through Time</p>
       <p class="chapter-indicator" aria-live="polite">Now viewing: Intro</p>
-      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">Dark Mode</button>
+      <label class="theme-toggle" for="theme-preference">
+        <span class="theme-toggle-label">Theme</span>
+        <select id="theme-preference" class="theme-select" aria-label="Select theme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
     </div>
   </header>
 
@@ -34,7 +41,6 @@
         <span class="hero-title-line" data-text="A SCROLL">A SCROLL</span>
         <span class="hero-title-line" data-text="THROUGH TIME">THROUGH TIME</span>
       </h1>
-      <p class="hero-subtitle">Every scroll reveals a new chapter of life.</p>
     </section>
 
     <section class="chapter" id="birth" data-label="Hello, World">

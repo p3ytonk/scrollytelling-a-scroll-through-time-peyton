@@ -6,7 +6,9 @@ const orbs = gsap.utils.toArray(".orb");
 const liquidGradientRoot = document.querySelector("#liquid-gradient");
 const heroTitle = document.querySelector(".hero-title");
 const heroTitleLines = gsap.utils.toArray(".hero-title-line");
-const themeToggle = document.querySelector(".theme-toggle");
+const themePreferenceInput = document.querySelector(".theme-select");
+const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const balloonChapter = chapters[1] || null;
 const finalChapter = chapters[chapters.length - 1] || null;
 const finalProgressBar = progressBars[progressBars.length - 1] || null;
 const finalComic = finalChapter?.querySelector(".comic") || null;
@@ -17,33 +19,122 @@ gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let confettiLayer = null;
+let balloonLayer = null;
 let finaleTimeline = null;
 
-const applyTheme = (theme) => {
-  const nextTheme = theme === "dark" ? "dark" : "light";
+const getResolvedTheme = (themePreference) => {
+  if (themePreference === "system") {
+    return systemThemeQuery.matches ? "dark" : "light";
+  }
 
-  document.body.dataset.theme = nextTheme;
+  return themePreference === "dark" ? "dark" : "light";
+};
 
-  if (themeToggle) {
-    const isDark = nextTheme === "dark";
-    themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-    themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+const applyTheme = (themePreference) => {
+  document.body.dataset.theme = getResolvedTheme(themePreference);
+
+  if (themePreferenceInput) {
+    themePreferenceInput.value = themePreference;
   }
 };
 
 const initThemeToggle = () => {
   const savedTheme = window.localStorage.getItem("theme-preference");
-  applyTheme(savedTheme || "light");
+  const themePreference = savedTheme === "light" || savedTheme === "dark" || savedTheme === "system"
+    ? savedTheme
+    : "system";
 
-  if (!themeToggle) {
+  if (!savedTheme) {
+    window.localStorage.setItem("theme-preference", themePreference);
+  }
+
+  applyTheme(themePreference);
+
+  if (!themePreferenceInput) {
     return;
   }
 
-  themeToggle.addEventListener("click", () => {
-    const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-    window.localStorage.setItem("theme-preference", nextTheme);
+  themePreferenceInput.addEventListener("change", (event) => {
+    const nextThemePreference = event.target.value;
+    applyTheme(nextThemePreference);
+    window.localStorage.setItem("theme-preference", nextThemePreference);
+  });
+
+  systemThemeQuery.addEventListener("change", () => {
+    const storedTheme = window.localStorage.getItem("theme-preference") || "system";
+
+    if (storedTheme === "system") {
+      applyTheme("system");
+    }
+  });
+};
+
+const animatePanelText = (panelText) => {
+  const letters = panelText.querySelectorAll(".panel-text-letter");
+
+  if (!letters.length) {
+    return;
+  }
+
+  gsap.killTweensOf(letters);
+  gsap.set(letters, { y: 0 });
+  gsap.to(letters, {
+    y: -10,
+    duration: 0.18,
+    ease: "power2.out",
+    stagger: 0.012,
+    yoyo: true,
+    repeat: 1,
+    overwrite: true,
+  });
+};
+
+const initPanelTextRipples = () => {
+  const textPanels = document.querySelectorAll(".panel-text");
+
+  textPanels.forEach((panelText) => {
+    const text = panelText.textContent || "";
+    const fragment = document.createDocumentFragment();
+    const content = document.createElement("span");
+    const tokens = text.split(/(\s+)/);
+
+    content.className = "panel-text-content";
+
+    panelText.textContent = "";
+
+    tokens.forEach((token) => {
+      if (!token) {
+        return;
+      }
+
+      if (/^\s+$/.test(token)) {
+        content.appendChild(document.createTextNode(token));
+        return;
+      }
+
+      const word = document.createElement("span");
+      word.className = "panel-text-word";
+
+      Array.from(token).forEach((character) => {
+        const letter = document.createElement("span");
+        letter.className = "panel-text-letter";
+        letter.textContent = character;
+        word.appendChild(letter);
+      });
+
+      content.appendChild(word);
+    });
+
+    fragment.appendChild(content);
+    panelText.appendChild(fragment);
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    panelText.addEventListener("pointerenter", () => {
+      animatePanelText(panelText);
+    });
   });
 };
 
@@ -87,6 +178,92 @@ const clearConfetti = () => {
 
   gsap.killTweensOf(confettiLayer.children);
   confettiLayer.replaceChildren();
+};
+
+const getBalloonLayer = () => {
+  if (balloonLayer) {
+    return balloonLayer;
+  }
+
+  balloonLayer = document.createElement("div");
+  balloonLayer.className = "balloon-layer";
+  balloonLayer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(balloonLayer);
+  return balloonLayer;
+};
+
+const clearBalloon = () => {
+  if (!balloonLayer) {
+    return;
+  }
+
+  gsap.killTweensOf(balloonLayer.children);
+  balloonLayer.replaceChildren();
+};
+
+const buildBalloonTimeline = () => {
+  if (!balloonChapter || prefersReducedMotion) {
+    return null;
+  }
+
+  const layer = getBalloonLayer();
+  const balloon = document.createElement("div");
+  const balloonMarkup = [
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="balloon-svg">',
+    '<path d="M12 16v1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v1"/>',
+    '<path d="M12 6a2 2 0 0 1 2 2"/>',
+    '<path d="M18 8c0 4-3.5 8-6 8s-6-4-6-8a6 6 0 0 1 12 0"/>',
+    "</svg>",
+  ].join("");
+
+  clearBalloon();
+
+  balloon.className = "scroll-balloon";
+  balloon.innerHTML = balloonMarkup;
+  layer.appendChild(balloon);
+
+  const timeline = gsap.timeline({ paused: true });
+
+  timeline.set(balloon, {
+    x: () => window.innerWidth * 0.7,
+    y: () => window.innerHeight * 0.92,
+    scale: 1,
+    rotation: -8,
+    opacity: 0,
+    force3D: false,
+  }, 0);
+
+  timeline.to(balloon, {
+    opacity: 0.95,
+    ease: "none",
+    duration: 0.16,
+  }, 0.06);
+
+  timeline.to(balloon, {
+    x: () => window.innerWidth * 0.58,
+    y: () => window.innerHeight * 0.18,
+    scale: 1.08,
+    rotation: 6,
+    ease: "none",
+    duration: 0.62,
+  }, 0.12);
+
+  timeline.to(balloon, {
+    x: () => window.innerWidth * 0.46,
+    y: () => -window.innerHeight * 0.24,
+    scale: 1.14,
+    rotation: -3,
+    ease: "none",
+    duration: 0.26,
+  }, 0.74);
+
+  timeline.to(balloon, {
+    opacity: 0,
+    ease: "none",
+    duration: 0.12,
+  }, 0.86);
+
+  return timeline;
 };
 
 const buildFinaleTimeline = () => {
@@ -288,13 +465,6 @@ const initHeroTitleAnimation = () => {
     },
     duration: 0.95,
     ease: "power3.out",
-  });
-
-  gsap.from(".hero-subtitle", {
-    y: 40,
-    opacity: 0,
-    delay: 0.45,
-    duration: 1,
   });
 
   gsap.to(heroLetters, {
@@ -742,6 +912,7 @@ if (!prefersReducedMotion) {
 }
 
 updateStoryProgress();
+initPanelTextRipples();
 window.addEventListener("scroll", updateStoryProgress, { passive: true });
 window.addEventListener("resize", updateStoryProgress);
 
@@ -768,6 +939,23 @@ if (finalChapter && finalProgressBar) {
       updateStoryProgress();
     },
   });
+}
+
+if (balloonChapter) {
+  const balloonTimeline = buildBalloonTimeline();
+  const balloonComic = balloonChapter.querySelector(".comic");
+
+  if (balloonTimeline) {
+    ScrollTrigger.create({
+      trigger: balloonComic || balloonChapter,
+      horizontal: true,
+      start: "left 92%",
+      end: "right 18%",
+      scrub: 1,
+      animation: balloonTimeline,
+      invalidateOnRefresh: true,
+    });
+  }
 }
 
 storySections.forEach((section) => {

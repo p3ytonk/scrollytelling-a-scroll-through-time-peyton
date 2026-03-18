@@ -11,9 +11,9 @@
   --font-display: "Bayon", sans-serif;
   --font-body: "Baskerville", serif;
 
-  --bg: #140c0a;
-  --text: #f6f4d2;
-  --text-muted: #cbdfbd;
+  --bg: #fff8f0;
+  --text: #4f1d18;
+  --text-muted: #81524c;
   --comic-surface: linear-gradient(rgba(255, 248, 240, 0.94), rgba(247, 237, 228, 0.96));
   --comic-highlight: radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 55%);
   --comic-border: rgba(252, 248, 242, 0.9);
@@ -22,15 +22,27 @@
   --comic-vignette: radial-gradient(circle at center, transparent 60%, rgba(247, 237, 228, 0.18) 84%, rgba(247, 237, 228, 0.38) 100%);
   --comic-panel-bg: #f7f1ea;
   --comic-text: #4f1d18;
-  --panel-bg: rgba(246, 244, 210, 0.09);
-  --panel-border: rgba(246, 244, 210, 0.32);
-  --header-bg: rgba(79, 29, 24, 0.72);
-  --header-border: rgba(212, 224, 155, 0.24);
-  --progress-track: rgba(212, 224, 155, 0.24);
-  --progress-fill: linear-gradient(90deg, #d4e09b 0%, #f19c79 100%);
+  --panel-bg: rgba(255, 248, 240, 0.58);
+  --panel-border: rgba(79, 29, 24, 0.18);
+  --header-bg: rgba(247, 237, 228, 0.8);
+  --header-border: rgba(79, 29, 24, 0.12);
+  --progress-track: rgba(79, 29, 24, 0.12);
+  --progress-fill: linear-gradient(90deg, #a44a3f 0%, #f19c79 100%);
+  --button-border: rgba(79, 29, 24, 0.2);
+  --button-bg: rgba(255, 248, 240, 0.85);
+  --button-bg-hover: rgba(241, 156, 121, 0.18);
+  --button-text: #4f1d18;
+  --background-gradient: radial-gradient(circle at top, rgba(241, 156, 121, 0.22), transparent 38%), linear-gradient(180deg, #fff8f0 0%, #f7ede4 100%);
+  --background-glow:
+    radial-gradient(circle at 18% 22%, rgba(241, 156, 121, 0.16), transparent 24%),
+    radial-gradient(circle at 78% 18%, rgba(212, 224, 155, 0.16), transparent 28%),
+    radial-gradient(circle at 54% 78%, rgba(164, 74, 63, 0.12), transparent 30%);
 }
 
 body[data-theme="dark"] {
+  --bg: #140c0a;
+  --text: #f6f4d2;
+  --text-muted: #cbdfbd;
   --comic-surface: linear-gradient(rgba(79, 29, 24, 0.96), rgba(43, 23, 20, 0.98));
   --comic-highlight: radial-gradient(circle at top, rgba(246, 244, 210, 0.09), transparent 55%);
   --comic-border: rgba(79, 29, 24, 0.95);
@@ -39,4 +51,19 @@ body[data-theme="dark"] {
   --comic-vignette: radial-gradient(circle at center, transparent 60%, rgba(20, 12, 10, 0.16) 84%, rgba(20, 12, 10, 0.34) 100%);
   --comic-panel-bg: #2b1714;
   --comic-text: #f6f4d2;
+  --panel-bg: rgba(246, 244, 210, 0.09);
+  --panel-border: rgba(246, 244, 210, 0.32);
+  --header-bg: rgba(79, 29, 24, 0.72);
+  --header-border: rgba(212, 224, 155, 0.24);
+  --progress-track: rgba(212, 224, 155, 0.24);
+  --progress-fill: linear-gradient(90deg, #d4e09b 0%, #f19c79 100%);
+  --button-border: rgba(246, 244, 210, 0.28);
+  --button-bg: rgba(246, 244, 210, 0.08);
+  --button-bg-hover: rgba(246, 244, 210, 0.16);
+  --button-text: #f6f4d2;
+  --background-gradient: radial-gradient(circle at top, rgba(241, 156, 121, 0.2), transparent 38%), linear-gradient(180deg, #2b1714 0%, #140c0a 100%);
+  --background-glow:
+    radial-gradient(circle at 18% 22%, rgba(241, 156, 121, 0.22), transparent 24%),
+    radial-gradient(circle at 78% 18%, rgba(212, 224, 155, 0.18), transparent 28%),
+    radial-gradient(circle at 54% 78%, rgba(164, 74, 63, 0.22), transparent 30%);
 }
