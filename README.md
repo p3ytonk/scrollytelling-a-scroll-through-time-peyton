@@ -53,3 +53,63 @@ After your repo is created:
 2. Create all required sub-issues from templates.
 3. Link sub-issues back into the master issue.
 4. Use `Blocker Report` if stuck for more than 20 minutes.
+
+# A Scroll Through Time
+## Description
+
+This project is a scrollytelling website that walks through different stages of life using birthday celebrations. Each section represents a different age, starting at birth and moving all the way to old age. As you scroll, you move through these moments and see how the way we celebrate changes over time.
+
+At the same time, the project also reflects my experience learning JavaScript. Each section connects to something I learned, starting with “Hello, World” and building into things like variables, event listeners, functions, loops, and conditionals. The scroll acts like a timeline, but also like a program running from start to finish.
+
+The site is built using HTML, CSS, and JavaScript, with GSAP and ScrollTrigger controlling the animations. As you scroll, elements fade in, move across the screen, and layer on top of each other to create depth. Some sections use parallax so different layers move at different speeds, which helps make the experience feel more interactive and engaging.
+
+## The main files include:
+
+index.html, which holds the structure of each section
+
+style.css, which controls layout, typography, and positioning
+
+main.js, which handles all animations using GSAP and ScrollTrigger
+
+One of my main design choices was keeping everything black and white. I wanted the focus to be on the motion and storytelling instead of color. I also adjusted how busy or simple each section felt depending on the age, so the pacing changes as you scroll through the site.
+
+## Links
+
+Live Site: https://p3ytonk.github.io/scrollytelling-a-scroll-through-time-peyton/
+
+Repository: https://github.com/p3ytonk/scrollytelling-a-scroll-through-time-peyton
+
+## Tech Stack
+
+HTML
+
+CSS
+
+JavaScript
+
+GSAP
+
+ScrollTrigger
+
+ScrollSmoother
+
+# Reflection
+Metaphor Summary
+
+This project connects growing up with learning JavaScript. Each stage of life lines up with something I learned in coding, showing how both start simple and get more complex over time. By the end, it becomes more about understanding everything as a whole rather than just learning new things.
+
+## Section I Am Most Proud Of
+
+The part I am most proud of is the background movement throughout the site. I spent time making sure it shifts and moves in a way that adds depth without being distracting. It helps tie everything together and makes the scroll feel more smooth and intentional.
+
+## Technical Bug I Solved
+
+One problem I ran into was animations not triggering when they were supposed to. Some elements would not show up or would stay still. I figured out it had to do with my ScrollTrigger settings and how things were being targeted. Once I fixed the triggers and cleaned up my class names, everything started working correctly.
+
+## Accessibility Decision
+
+I added support for reduced motion by checking the user’s system preferences. If reduced motion is turned on, the animations are limited so the site is still easy to use and not overwhelming.
+
+## What I Would Improve With More Time
+
+If I had more time, I would work on making the transitions between sections feel even smoother. I would also explore adding more variation in movement and possibly small color accents to help separate each stage a little more while still keeping the overall style consistent.
